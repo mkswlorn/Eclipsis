@@ -1,0 +1,293 @@
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wally2')))()
+local playerlist = {}
+local RS = game:GetService("RunService").RenderStepped
+local Sound
+local Player = game:GetService("Players").LocalPlayer
+local SaveTable = {}
+local Mouse = game.Players.LocalPlayer:GetMouse()
+local input = game:GetService("UserInputService")
+
+
+
+
+
+
+local function Damage(Part, Ammount)
+    for i = 1, Ammount do
+        local PistLoc = Player.Backpack:FindFirstChild('Pistol') or Player.Character:FindFirstChild('Pistol')
+        PistLoc.Remote:FireServer(
+            "HitReported",
+            game.Players.LocalPlayer.Character.HumanoidRootPart.Position,
+            Part,
+            Part.Position,
+            Vector3.new()
+        )
+    end    
+end
+
+	local function Drill(Part, Ammount)
+	    local DrillLoc = Player.Backpack:FindFirstChild('Laser Drill') or Player.Character:FindFirstChild('Laser Drill')
+		for i = 1, Ammount do
+			if DrillLoc then
+				DrillLoc.Remote:FireServer("HitReported", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Part, Part.Position, Vector3.new())
+			end
+		end	
+	end
+local w = library:CreateWindow('EclipsisFuckerV1')
+
+ w:Button('GodMode', function()
+ local gmt = getrawmetatable(game)
+setreadonly(gmt, false)
+local oldindex = gmt.__index
+gmt.__index = newcclosure(function(self,b)
+if b == "Health" then
+return 100
+end
+return oldindex(self,b)
+end)
+   
+
+game:GetService("ReplicatedStorage").Shared.Remotes.FallDamageDamageTaken:FireServer(game:GetService("Players").LocalPlayer.Character.Humanoid, 0/0)
+
+ end)
+
+w:Button("Crash Others", function()
+for _, v in pairs(game:GetDescendants()) do
+    if  v:IsA('Sound')then
+        Sound = v
+    end
+end
+
+RS:Connect(function()
+    for i = 1,3 do
+        game.ReplicatedStorage.Shared.Remotes.EffectRequested:FireServer("Gun", {["Sound"] = Sound, ["Name"] = 'PlaySound'})
+    end
+end)
+end)
+w:Button('Rainbow Walls', function()
+while wait() do
+	for i = 0,1,0.001*100 do
+	    wait(0.1)
+game:GetService("Players").LocalPlayer.PlayerScripts.EffectsClient.EffectRequested:Fire("Gun", {["PartArgs"] = {["Color"] = Color3.fromHSV(i,1,1), ["Transparency"] =  0, ["Material"] = "Neon"}, ["Direction"] = Vector3.new(0.014200193807483, -0.045600887387991, -0.99885880947113), ["Name"] = "HitscanBeam", ["Here"] = Vector3.new(-25.473701477051, 301.60906982422, 798.64807128906), ["Speed"] = 512, ["Attachment"] = nil, ["Size"] = 2000, ["There"] = Vector3.new(-23.656076431274, 295.77215576172, 670.79412841797)})
+
+game:GetService("Players").LocalPlayer.PlayerScripts.EffectsClient.EffectRequested:Fire("Gun", {["PartArgs"] = {["Color"] = Color3.fromHSV(i,1,1), ["Transparency"] =  0, ["Material"] = "Neon"}, ["Direction"] = Vector3.new(0.99615252017975, -0.07897711545229, 0.037983890622854), ["Name"] = "HitscanBeam", ["Here"] = Vector3.new(-951.75994873047, 378.25802612305, -18.079414367676), ["Speed"] = 512, ["Attachment"] = nil, ["Size"] = 2000, ["There"] = Vector3.new(-824.25244140625, 368.14895629883, -13.217476844788)})
+
+game:GetService("Players").LocalPlayer.PlayerScripts.EffectsClient.EffectRequested:Fire("Gun", {["PartArgs"] = {["Color"] = Color3.fromHSV(i,1,1), ["Transparency"] =  0, ["Material"] = "Neon"}, ["Direction"] = Vector3.new(-0.038851264864206, -0.067800767719746, 0.99694216251373), ["Name"] = "HitscanBeam", ["Here"] = Vector3.new(-23.440465927124, 369.06634521484, -831.07543945313), ["Speed"] = 512, ["Attachment"] = nil, ["Size"] = 2000, ["There"] = Vector3.new(-28.413427352905, 360.38784790039, -703.46685791016)})
+
+game:GetService("Players").LocalPlayer.PlayerScripts.EffectsClient.EffectRequested:Fire("Gun", {["PartArgs"] = {["Color"] = Color3.fromHSV(i,1,1), ["Transparency"] =  0, ["Material"] = "Neon"}, ["Direction"] = Vector3.new(-0.99852764606476, -0.04955793172121, -0.022060992196202), ["Name"] = "HitscanBeam", ["Here"] = Vector3.new(946.54339599609, 375.71493530273, -19.723762512207), ["Speed"] = 512, ["Attachment"] = nil, ["Size"] = 2000, ["There"] = Vector3.new(818.73187255859, 369.37152099609, -22.547569274902)})
+
+
+game:GetService("Players").LocalPlayer.PlayerScripts.EffectsClient.EffectRequested:Fire("Gun", {["PartArgs"] = {["Color"] = Color3.fromHSV(i,1,1), ["Transparency"] =  0, ["Material"] = "Neon"}, ["Direction"] = Vector3.new(0.037789229303598, -0.99791622161865, 0.05229938775301), ["Name"] = "HitscanBeam", ["Here"] = Vector3.new(-46.371337890625, 360.85116577148, -78.7978515625), ["Speed"] = 512, ["Attachment"] = nil, ["Size"] = 2000, ["There"] = Vector3.new(-41.534317016602, 233.11790466309, -72.103530883789)})
+
+--game:GetService("Players").LocalPlayer.PlayerScripts.EffectsClient.EffectRequested:Fire("Gun", {["PartArgs"] = {["Color"] = Color3.fromHSV(i,1,1), ["Transparency"] =  0, ["Material"] = "Neon"}, ["Direction"] = Vector3.new(0, 1, 0), ["Name"] = "HitscanBeam", ["Here"] = Vector3.new(95.9874, 107, 80.5167), ["Speed"] = 0.05, ["Attachment"] = nil, ["Size"] = 3000, ["There"] = Vector3.new(95.9874, 109, 80.5167)})
+
+end end end) 
+
+
+w:Toggle('Blueprint Stopper', {flag = "bptog"})
+w:Toggle('Herobrine Mode', {flag = "HeroTog"}, function()
+    if w.flags.HeroTog then
+        
+       for i = 1,300 do
+game:GetService("ReplicatedStorage").Shared.Remotes.LoadoutRequested:FireServer()
+end
+end
+    end)
+
+local Spires = {
+    ['SpireFill1'] = 12,
+    ['SpireFillLarge1'] = 100,
+    ['SpireTop1'] = 20,
+    ['SpireTop2'] = 6,
+    ['SpireTop3'] = 6,
+    ['SpireOpen1'] = 2,
+    ['SpireOpen2'] = 2,
+    ['SpireOpenLarge1'] = 20,
+    ['SpireOpenLarge2'] = 30
+}
+
+for i,v in pairs(game.Players:GetPlayers())do
+    if v ~= game.Players.LocalPlayer then
+        table.insert(playerlist,v.Name)
+    end
+end
+
+w:Toggle('Wilhelm Scream', {flag = "wiltog"})
+local new =	w:Section('Laser Drill')
+w:Button("Destroy Spires", function()
+  z = workspace.Map:GetChildren()
+for i=1, #z do
+    for m,d in pairs(Spires) do
+    if string.find(z[i].Name, m) then
+for i,v in pairs(z[i]:GetDescendants()) do 
+    if v:IsA("Part") or v:IsA("Mesh") or v:IsA("UnionOperation") then
+   Drill(v, d)
+
+    end
+end
+end
+end
+end
+end)
+local BottomParts = {
+    ['Pipe'] = 35,
+    ['Pipe1'] = 35,
+    ['FillOpen1'] = 12,
+    ['FillOpen2'] = 12,
+    ['FillOpen3'] = 15,
+    ['FillOpen4'] = 20,
+    ['FillOpen5'] = 45,
+    ['FillOpen6'] = 50,
+    ['Fill1'] = 20,
+    ['Fill2'] = 25,
+    ['Fill3'] = 37,
+    ['Fill4'] = 39,
+    ['Fill5'] = 39,
+    ['Fill6'] = 60,
+    ['Ladder1'] = 20,
+    ['Ladder3'] = 30,
+    ['Ladder4'] = 30,
+    ['Cell'] = 10
+}
+w:Button("Destroy Map", function()
+    local p = Instance.new('Part', workspace)
+    p.Position = Vector3.new(-135.21, -142.8, -0.878387)
+    p.Size = Vector3.new(1800, 1, 1403)
+    p.Anchored = true
+    p.CanCollide = true
+  for _,v in pairs(p:GetTouchingParts()) do
+        spawn(function()
+   repeat wait() Drill(v,3) until not v:IsDescendantOf(game) 
+p:Destroy()
+end)
+end
+wait()
+end)
+w:Button("Touching Beacon", function()
+       for i,h in pairs(workspace.Map:GetChildren()) do
+if h.Name == 'ControlBlock1' then
+          local vv = Instance.new('Part', workspace)
+    vv.Position = h.PriorityBeaconPoint.Position
+    vv.Size = Vector3.new(40, 30, 40)
+    vv.Anchored = true
+    vv.CanCollide = true
+        for _,t in pairs(vv:GetTouchingParts()) do
+            if not t:IsDescendantOf(h) then
+        spawn(function()
+   repeat wait() Drill(t,3) until not t:IsDescendantOf(game) 
+vv:Destroy()
+end)
+end
+end
+end
+end
+end)
+w:Toggle('Destroy Key', {flag = "keytog"})
+w:Bind("Destroy Key", {
+   flag = "killbind";
+   kbonly = true;
+   default = Enum.KeyCode.Y;
+}, function()
+if w.flags.keytog then
+    for i=1,50 do
+        local DrillLoc = Player.Backpack:FindFirstChild('Laser Drill') or Player.Character:FindFirstChild('Laser Drill')
+DrillLoc.Remote:FireServer("HitReported", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Mouse.Target, Mouse.Hit.p, Vector3.new())
+end
+end
+end)	
+input.InputBegan:connect(function(k)
+    local key = k.KeyCode
+    if key == Enum.KeyCode.Y then
+        Down1 = true
+    end
+end)
+
+input.InputEnded:connect(function(k)
+    local key = k.KeyCode
+    if key == Enum.KeyCode.Y then
+        Down1 = false
+    end
+end)
+local drop = w:Dropdown("Troll Players", {
+   flag = "bonk";
+   list = playerlist
+}, function(new)
+   _G.Player = new
+end)
+
+game.Players.PlayerAdded:Connect(function(player)
+    local name = player.Name
+    table.insert(playerlist,name)
+    drop:Refresh(playerlist)
+end)
+
+game.Players.PlayerRemoving:Connect(function(player)
+    local name = player.Name
+    for i,v in pairs(playerlist)do
+        if v == name then  
+            table.remove(playerlist,i)
+        end
+    end
+    drop:Refresh(playerlist)
+end)
+
+      workspace.Structures.ChildAdded:Connect(function(Child)
+            if w.flags.bptog then
+    wait()
+    if Child:FindFirstChild("Team") then
+        if Child.Team.Value ~= Player.TeamColor then
+            Damage(Child:FindFirstChildWhichIsA("BasePart"), 10)
+        end
+    end
+    end
+ 
+    end)
+Player.Character.ChildAdded:Connect(function(Child)
+    if w.flags.HeroTog then
+        _G.HeroAct = true
+        wait(1)
+for i,v in pairs(Child:GetDescendants()) do
+            if v:IsA('SpotLight') then
+   v:Remove()
+   end
+               if v:IsA('PointLight') then
+  table.insert(SaveTable, v.Parent.Parent)
+            end
+end
+if Child.Name == "IridiumTank" then 
+      game:GetService("Debris"):AddItem(Child, 0.1)
+      end
+   end
+end)
+while wait() do
+ if not w.flags.HeroTog and _G.HeroAct then
+     pcall(function()
+     for i,v in pairs(SaveTable) do
+     v:Remove()
+     end
+     end)
+     _G.HeroAct = false
+ end
+     if w.flags.wiltog then
+        wait(1)
+        game.ReplicatedStorage.Shared.Sounds.Death.DeathWilhelm:Play()
+        game.ReplicatedStorage.Shared.Remotes.EffectRequested:FireServer("Gun", {["Sound"] = game.ReplicatedStorage.Shared.Sounds.Death.DeathWilhelm, ["Name"] = 'PlaySound'})
+     end
+if Down1 == true and w.flags.keytog then
+    for i=1,50 do
+       game:GetService("Players").LocalPlayer.Backpack['Laser Drill'].Remote:FireServer("HitReported", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, Mouse.Target, Mouse.Hit.p, Vector3.new())
+end
+end
+if _G.Player then
+    pcall(function()
+    local player = _G.Player
+    local PlrRay = Ray.new(game.Players[player].Character.HumanoidRootPart.CFrame.Position, game.Players[player].Character.HumanoidRootPart.CFrame.lookVector * 500)
+    local hit, position = workspace:FindPartOnRay(PlrRay, char)
+ 
+for i=1,10 do
+game:GetService("Players").LocalPlayer.Backpack['Laser Drill'].Remote:FireServer("HitReported", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, hit, position, Vector3.new())
+end
+
+end)
+end
+end

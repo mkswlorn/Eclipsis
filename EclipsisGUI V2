@@ -6,19 +6,6 @@ if not IsStudio then
 local mt = getrawmetatable(game)
 make_writeable(mt)
 
-local namecall = mt.__namecall
-
-mt.__namecall = newcclosure(function(self, ...)
-    local method = getnamecallmethod()
-    local args = {...}
-
-    if method == "InvokeServer" and tostring(self) == "GetClients" then
-       return wait(9e9)
-           end
-    return namecall(self, table.unpack(args))
-end)
-
-
  local mouse = game:GetService("Players").LocalPlayer:GetMouse()
 local getGc = getgc
 local getInfo = debug.getinfo or getinfo
@@ -62,7 +49,7 @@ for i=1, #z do
 if z[i].Name == "Refill Station" then 
     local Team = z[i]:GetChildren()
     for i=1, #Team do
-if Team[i].Name == "Team" and Team[i].Value == myTeam then
+if Team[i].Name == "TeamColor" and Team[i].BrickColor == myTeam then
 local model1 = Team[i].Parent:GetChildren()
 for i=1, #model1 do
 if model1[i].Name == "RefillConsole" then 
@@ -221,20 +208,10 @@ local PlayerGui         = Player.PlayerGui;
 local setupvalue        = setupvalue or debug.setupvalue;
 _G.JetThrust = 17
 local Library           = loadstring(game:HttpGet("https://raw.githubusercontent.com/mkswlorn/My-Repo/main/UI"))();
-local MainWindow        = Library:CreateWindow("Eclipsis GUI V2");
+local MainWindow        = Library:CreateWindow("Ghost Menu");
 local MainFolder      = MainWindow:AddFolder("Main");
 local CombatFolder      = MainWindow:AddFolder("Combat");
 local MapFolder      = MainWindow:AddFolder("Map");
-local BargeFolder = MapFolder:AddFolder("Barge");
-local KillAuraTog, GodModeTog, NocoolTog; -- ik aids but this ui lib bad so /shrug
-local SprintConstants = {
-	[1] = "ThrottleFloat",
-	[2] = "Enum",
-	[3] = "KeyCode",
-	[4] = "LeftShift",
-	[5] = Enum.KeyCode.LeftShift,
-	[6] = "IsKeyDown"
-}
 
 do
 MainFolder:AddBind({text = "Toggle GUI", flag = "bind", key = "F1", callback = function() 
@@ -274,23 +251,6 @@ debug.setupvalue(cloE, 13, _G.JetThrust)
 end})
 end
 
-do
-BargeFolder:AddToggle({text = "Inf Fuel", flag = "FuelTog", state = false;})
-end
-    pcall(function()
-
-game.Players.LocalPlayer.Character.ChildAdded:Connect(function(w)
-for i,v in pairs(w:GetChildren()) do
-    if v.Name == "BargeClient" then
-     sprintclosure = searchClosure(game.Players.LocalPlayer.Character:FindFirstChild('BargeClient'), "Unnamed function", 4, SprintConstants) 
-    end
-end
-end)
-end)
-do
-BargeFolder:AddToggle({text = "Inf Boost", flag = "SprintTog", state = false; callback = function(state)
-end
-})
 end
 
 --[[
@@ -299,33 +259,13 @@ BargeFolder:AddToggle({text = "Barge Fly", flag = nil, state = false;})
 end
 -]]
 
-do
-CombatFolder:AddButton({text = "GodMode", flag = nil, callback = function() 
- local gmt = getrawmetatable(game)
-setreadonly(gmt, false)
-local oldindex = gmt.__index
-gmt.__index = newcclosure(function(self,b)
-if b == "Health" then
-return 100
-end
-return oldindex(self,b)
-end)
-   
 
-game:GetService("ReplicatedStorage").Shared.Remotes.FallDamageDamageTaken:FireServer(game:GetService("Players").LocalPlayer.Character.Humanoid, 0/0)
 
-   end})
-end
-end
 do
-    CombatFolder:AddButton({text = "Gun Mod",flag = nil;state = false; callback = function(gu)
+    CombatFolder:AddToggle({text = "OneShot",flag = "OneShot";state = false; callback = function(state)
+    if state then
     _G.Automatic = false
-_G.Bullets = 1
- _G.Firerate = 25
- _G.Range = 100
-  _G.Speed = 512
-  _G.Size = 0.15
-  _G.Color = "Teal"
+_G.Bullets = 10
   if not _G.isGunTog then
 _G.isGunTog = true
 local function ChangeGun()
@@ -335,22 +275,13 @@ a.ShowReload = function(p19)
 		return;
 	end;
 		p19.PrimaryIridiumCost = 0
-	p19.PrimaryFireRate = _G.Firerate
-		p19.PrimaryRange = _G.Range
-				p19.Transparency = 0
 			p19.PrimaryInaccuracy = 0.3
-			
-					p19.EffectArgs.Speed = _G.Speed
-					p19.EffectArgs.Size = _G.Size
-					p19.EffectArgs.PartArgs.Color = _G.Color
 p19.PrimaryProjectileCount = _G.Bullets
 	if _G.Automatic == true then
     p19.PrimaryAutomatic = true
     else
         p19.PrimaryAutomatic = false
         end
-			
-			
 			
 	local v33 = tick() - p19.PrimaryFireLast;
 	local v34 = 1 / p19.PrimaryFireRate;
@@ -377,137 +308,22 @@ p19.PrimaryProjectileCount = _G.Bullets
 end
 end;
 
-local GunWindow        = Library:CreateWindow("Gun Mod");
-GunWindow:AddSlider({text = "Firerate", flag = "slider", value = 25, min = 5, max = 300, float = 0.3, callback = function(a) 
-    _G.Firerate = a
-    end})
-GunWindow:AddSlider({text = "Range", flag = "slider", value = 100, min = 20, max = 1500, float = 0.3, callback = function(a) 
-    _G.Range = a
-end})
-GunWindow:AddSlider({text = "Speed", flag = "slider", value = 512, min = 10, max = 2000, float = 0.3, callback = function(a) 
-    _G.Speed = a
-end})
-GunWindow:AddSlider({text = "Size", flag = "slider", value = 0.15, min = 0.1, max = 5, float = 0.3, callback = function(a) 
-    _G.Size = a
-end})
-GunWindow:AddSlider({text = "Bullets", flag = "slider", value = 1, min = 1, max = 20, float = 0.3, callback = function(a) 
-    _G.Bullets = a
-end})
-GunWindow:AddColor({text = "Color", flag = "color", color = Color3.fromRGB(255, 65, 65), callback = function(a) 
-    _G.Color = a
-    end})
 
-Library:Init();
 while wait() do
 
-	if _G.Firerate > 25 then 
-    _G.Automatic = true 
-    else
-        _G.Automatic = false 
-	end
 	ChangeGun()
 end
 else 
     warn('GunMod Already running!')
-    end
+  end
+end
     end});
 end
-do
-    CombatFolder:AddToggle({text = "KillAura",flag = nil; state = false; callback = function(state)
-            KillAuraTog = state;
-            while KillAuraTog do wait()
-    for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-        if v.Team ~= game.Players.LocalPlayer.Team then
-            pcall(function()
-     if v.Character.Humanoid.Health > 0 then
-         local PLoc = game:GetService("Players").LocalPlayer.Backpack:FindFirstChild('Pistol') or game:GetService("Players").LocalPlayer.Character:FindFirstChild('Pistol')
-         if PLoc then
-PLoc.Remote:FireServer("HitReported", game.Players.LocalPlayer.Character.HumanoidRootPart.Position, v.Character.Head, v.Character.Head.Position, Vector3.new())
-end
-end
-end)
-end
-end
-end
 
-
-            end;
-    });
-end;
-
-
-
-do
-    CombatFolder:AddToggle({text = "OneShot",flag = "OneShot",state = false; callback = function(state)
-    aa = require(game:GetService("ReplicatedStorage").Shared.Class.GunClient.GunHitscanClient)
-    if state then
-aa.ReportHit = function(p12, p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-        p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-end
-    else
-        aa.ReportHit = function(p12, p13, p14, p15, p16)
-    p12.Remote:FireServer("HitReported", p13, p14, p15, p16)
-    end
-end
-end});
-end
 do
     CombatFolder:AddToggle({text = "Triggerbot",flag = "TrigTog";state = false;});
 end
-do
-    CombatFolder:AddToggle({text = "Auto Cruise",flag = "CruiseTog";state = false; callback = function(state)
-        			while wait(0.5) do
-        			    if Library.flags.CruiseTog then
-        			for _, v in ipairs(workspace.Structures:GetChildren()) do
-				if v.Name == "Arsenal" then
-					if v.Team.Value == Team then
-						local Panel = v.ButtonPanel
-						wait()
-						if Panel["3"]:FindFirstChild("ContextButton") and Panel["3"].Button.BrickColor ~= BrickColor.new("Persimmon") and Panel["3"].ContextButton.Hint.Value == "Explosives" then
-							Remote:FireServer(Panel["3"].ContextButton)
-							Panel["3"].ContextButton:Fire()
-							Sync:FireServer(v)
-						elseif Panel["4"]:FindFirstChild("ContextButton") and Panel["4"].Button.BrickColor ~= BrickColor.new("Persimmon") and Panel["4"].ContextButton.Hint.Value == "Cruise Missile" then
-							Remote:FireServer(Panel["4"].ContextButton)
-							Panel["4"].ContextButton:Fire()
-							Sync:FireServer(v)
-						else
-							Remote:FireServer(Panel.Back.ContextButton)
-							Panel.Back.ContextButton:Fire()
-							Sync:FireServer(v)
-						end
-					end
-				end
-			end
-        			end
-	
-			for _, v in ipairs(workspace.Structures:GetDescendants()) do
-				if v.Name == "Hint" then
-					if v.Value == "Take Cruise Missile" then
-						wait(0.1)
-						if not Player.Character:FindFirstChild("Cruise Missile") and not Player.Backpack:FindFirstChild("Cruise Missile") then
-							Remote:FireServer(v.Parent)
-							v.Parent:Fire()
-						end
-					end
-				end
-				end
-end
-    end});
-end
+
 do
 CombatFolder:AddBind({text = "Aimbot", flag = "bind", hold = true, key = "R" , callback = function(a) 
     if a then  else 
@@ -543,35 +359,7 @@ _G.HeadSize = a
 end
 
 do
-MapFolder:AddButton({text = "Height Limit", flag = nil; callback = function() 
-  heightb = {
-	[1] = "workspace",
-	[2] = workspace,
-	[3] = "CurrentCamera",
-	[4] = "X",
-	[5] = "Y",
-	[6] = "ScreenPointToRay"
-}
-local PortLoc = game:GetService('Players').LocalPlayer.Character:FindFirstChild('Portafab') or game:GetService('Players').LocalPlayer.Backpack:FindFirstChild('Portafab')
-if PortLoc then 
-local heightbypass = searchClosure(PortLoc.StructurePlacer.Dragger, "Update", 10, heightb)
-debug.setupvalue(heightbypass, 10, math.huge)  
-end
-    end})
-end
-do
-MapFolder:AddButton({text = "Remove Sea", flag = nil, callback = function() 
-     pcall(function()
-        game.Players.LocalPlayer.Character.Swim:Destroy()
-        game.Workspace.Effects.LakeTop.Transparency = 0.8
-        game:GetService('Lighting').Sky:Destroy()
-    end)
-    end})
-end
-
-
-do
-MapFolder:AddButton({text = "FullBright", flag = nil, callback = function() 
+MapFolder:AddButton({text = "Full Bright", flag = nil, callback = function() 
 local a = true 
 game.Lighting.Changed:connect(function()
     pcall(function()
@@ -603,6 +391,7 @@ game.Lighting.Brightness = 2
 game.Lighting.ColorCorrection.Brightness = 0.1
 game.Lighting.ColorCorrection.Saturation = 0.1
    Lighting.Bloom:Destroy()
+   Lighting.Sky:Destroy()
 Lighting.WaterAtmosphere:Destroy()
 Lighting.Rays:Destroy()
    Lighting.SunRaysAlwaysOn:Destroy()
@@ -616,30 +405,96 @@ Lighting.Atmosphere:Destroy()
 
    end})
 end
+
+do
+MapFolder:AddButton({text = "Fall Damage", flag = nil, callback = function()
+game.ReplicatedStorage.Shared.Remotes.FallDamageDamageTaken:Destroy()
+wait(1)
+game.Players.LocalPlayer.Character.FallDamageScript:Destroy()
+end})
+end
+
+do
+MapFolder:AddButton({text = "Chat Spy", flag = nil, callback = function()
+    --This script reveals ALL hidden messages in the default chat
+--chat "/e spy" to toggle!
+enabled = true
+--if true will check your messages too
+spyOnMyself = true
+--if true will chat the logs publicly (fun, risky)
+public = false
+--if true will use /me to stand out
+publicItalics = false
+--customize private logs
+privateProperties = {
+	Color = Color3.fromRGB(0,255,255); 
+	Font = Enum.Font.SourceSansBold;
+	TextSize = 18;
+}
+--////////////////////////////////////////////////////////////////
+local StarterGui = game:GetService("StarterGui")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer or Players:GetPropertyChangedSignal("LocalPlayer"):Wait() or Players.LocalPlayer
+local saymsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("SayMessageRequest")
+local getmsg = game:GetService("ReplicatedStorage"):WaitForChild("DefaultChatSystemChatEvents"):WaitForChild("OnMessageDoneFiltering")
+local instance = (_G.chatSpyInstance or 0) + 1
+_G.chatSpyInstance = instance
+
+local function onChatted(p,msg)
+	if _G.chatSpyInstance == instance then
+		if p==player and msg:lower():sub(1,6)=="/e spy" then
+			enabled = not enabled
+			wait(0.3)
+			privateProperties.Text = "{SPY "..(enabled and "EN" or "DIS").."ABLED}"
+			StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+		elseif enabled and (spyOnMyself==true or p~=player) then
+			msg = msg:gsub("[\n\r]",''):gsub("\t",' '):gsub("[ ]+",' ')
+			local hidden = true
+			local conn = getmsg.OnClientEvent:Connect(function(packet,channel)
+				if packet.SpeakerUserId==p.UserId and packet.Message==msg:sub(#msg-#packet.Message+1) and (channel=="All" or (channel=="Team" and public==false and p.Team==player.Team)) then
+					hidden = false
+				end
+			end)
+			wait(1)
+			conn:Disconnect()
+			if hidden and enabled then
+				if public then
+					saymsg:FireServer((publicItalics and "/me " or '').."{SPY} [".. p.Name .."]: "..msg,"All")
+				else
+					privateProperties.Text = "{SPY} [".. p.Name .."]: "..msg
+					StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+				end
+			end
+		end
+	end
+end
+
+for _,p in ipairs(Players:GetPlayers()) do
+	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end
+Players.PlayerAdded:Connect(function(p)
+	p.Chatted:Connect(function(msg) onChatted(p,msg) end)
+end)
+privateProperties.Text = "{SPY "..(enabled and "EN" or "DIS").."ABLED}"
+player:WaitForChild("PlayerGui"):WaitForChild("Chat")
+StarterGui:SetCore("ChatMakeSystemMessage",privateProperties)
+wait(3)
+local chatFrame = player.PlayerGui.Chat.Frame
+chatFrame.ChatChannelParentFrame.Visible = true
+chatFrame.ChatBarParentFrame.Position = chatFrame.ChatChannelParentFrame.Position+UDim2.new(UDim.new(),chatFrame.ChatChannelParentFrame.Size.Y)
+    
+end})
+end
+
+do
+MapFolder:AddButton({text = "ESP", flag = nil, callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ic3w0lf22/Unnamed-ESP/master/UnnamedESP.lua", true))()
+end})
+end
+
+
 local teams = game:GetService("Teams")
 local getTeams = teams:GetChildren() 
-do
-MapFolder:AddButton({text = "Teleports", flag = nil, callback = function() 
-    if game.Players.LocalPlayer.Character then
-      if not _G.isTelTog then
-_G.isTelTog = true
-    local TeleWindow        = Library:CreateWindow("Team TP");
-for i,v in pairs(getTeams) do
-
-for i,spawnp in pairs(workspace.Structures:GetChildren()) do
-    if spawnp.Name == "Spawn Point" and spawnp.Team.Value == v.TeamColor then
-TeleWindow:AddButton({text = tostring(v), flag = "button", callback = function()
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(spawnp.Pad.Position.X, spawnp.Pad.Position.Y + 30, spawnp.Pad.Position.Z), Vector3.new())
-         end})
-end
-end
-end
-Library:Init();
-end
-end
-end});
-end
-
 
 
 do
@@ -758,26 +613,10 @@ if Library.flags.JetTog and game.Players.LocalPlayer.Character:FindFirstChild('I
     wait(0.5)
 debug.setupvalue(closure1, 1, 99)
 end
-pcall(function()
-local BargeSeat = game.Players.LocalPlayer.Character.Humanoid.SeatPart
-local BargeVal = BargeSeat.Parent.Parent:FindFirstChild('IsFueled')
-  if Library.flags.FuelTog then
-BargeVal.Value = true
-else 
-  BargeVal.Value = false
-end
-end)
-
-
-
-
 
 
 end
-    if Library.flags.SprintTog then wait()
-
-  debug.setupvalue(sprintclosure, 4, 299) 
-    end
+  
 end)
 
 
